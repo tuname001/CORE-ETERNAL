@@ -1,8 +1,10 @@
-var CACHE_NAME = 'pwa-core-eternal-final-v1';
+var CACHE_NAME = 'pwa-core-eternal-final-v2'; 
+
 var urlsToCache = [
   './',
   './index.html',
-  './icon.png'
+  './icon.png',
+  './manifest.json' // ここに新しいマニフェストファイルも追加しておくと確実です
 ];
 
 // インストール処理
@@ -24,5 +26,6 @@ self.addEventListener('fetch', function(event) {
       })
   );
 });
+
 
 
