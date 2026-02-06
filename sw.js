@@ -1,10 +1,11 @@
-var CACHE_NAME = 'core-eternal-strict-V2';
+// キャッシュ名を変更して更新を確実に反映させる
+var CACHE_NAME = 'core-eternal-relative-v8';
 
 var urlsToCache = [
-  '/CORE-ETERNAL-V2/index.html',  // start_urlと完全に一致させる（最重要）
-  '/CORE-ETERNAL-V2/',            // 念のためルートも確保
-  '/CORE-ETERNAL-V2/icon.png',
-  '/CORE-ETERNAL-V2/manifest.json'
+  './',             // 記事推奨: 相対パスでのルート指定
+  './index.html',   // 記事推奨: 相対パスでのファイル指定
+  './icon.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', function(event) {
@@ -39,10 +40,7 @@ self.addEventListener('fetch', function(event) {
         if (response) {
           return response;
         }
-        // キャッシュになくてもネットワークに取りに行く
         return fetch(event.request);
       })
   );
 });
-
-
