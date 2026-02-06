@@ -1,16 +1,14 @@
-var CACHE_NAME = 'core-eternal-v5-absolute';
+var CACHE_NAME = 'core-eternal-strict-v7';
 
-// ここも全て絶対パスで指定して、読み込みミスを防ぎます
 var urlsToCache = [
-  'https://tuname001.github.io/CORE-ETERNAL/',
-  'https://tuname001.github.io/CORE-ETERNAL/index.html',
-  'https://tuname001.github.io/CORE-ETERNAL/icon.png',
-  'https://tuname001.github.io/CORE-ETERNAL/manifest.json'
+  '/CORE-ETERNAL/index.html',  // start_urlと完全に一致させる（最重要）
+  '/CORE-ETERNAL/',            // 念のためルートも確保
+  '/CORE-ETERNAL/icon.png',
+  '/CORE-ETERNAL/manifest.json'
 ];
 
-// インストール処理
 self.addEventListener('install', function(event) {
-  self.skipWaiting(); // 強制的に新しいSWを有効化
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
@@ -19,7 +17,6 @@ self.addEventListener('install', function(event) {
   );
 });
 
-// 古いキャッシュの削除（重要）
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -35,13 +32,15 @@ self.addEventListener('activate', function(event) {
   return self.clients.claim();
 });
 
-// フェッチ処理（これが無いとアプリは動きません）
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // キャッシュにあればそれを返す。なければネットワークへ。
-        return response || fetch(event.request);
+        if (response) {
+          return response;
+        }
+        // キャッシュになくてもネットワークに取りに行く
+        return fetch(event.request);
       })
   );
 });
